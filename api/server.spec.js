@@ -1,9 +1,10 @@
 const req = require("supertest");
 const server = require("../api/server.js");
+const Games = require("../games/gamesModel");
 
 describe("the server", () => {
   describe("GET /", () => {
-    it(" should return up a response for the message", async () => {
+    it("should return up a response for the message", async () => {
       const res = await req(server).get("/");
       expect(res.status).toBe(200);
       expect(res.type).toBe("application/json");
