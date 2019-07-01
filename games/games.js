@@ -14,8 +14,12 @@ router.post("/", (req, res) => {
       messsage: "please supply a correct title and genre for the game"
     });
   } else {
-    const game = Games.addGame(newGame);
-    res.status(201).json(game);
+    if (Games.doesGameExist(newGame)) {
+      res.status(405).json({ message: "that title already exists" });
+    } else {
+      const game = Games.addGame(newGame);
+      res.status(201).json(game);
+    }
   }
 });
 
