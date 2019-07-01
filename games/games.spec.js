@@ -90,10 +90,39 @@ describe("the games router", () => {
         messsage: "please supply a correct title and genre for the game"
       });
     });
+
+    it("should return 422 for no title", async () => {
+      const game = {
+        genre: "Arcade",
+        releaseYear: 1980
+      };
+      const res = await req(server)
+        .post("/api/games")
+        .send(game);
+      expect(res.status).toBe(422);
+      expect(res.type).toBe("application/json");
+      expect(res.body).toEqual({
+        messsage: "please supply a correct title and genre for the game"
+      });
+    });
+
+    it("should return 201 without a release year", async () => {
+      const game = {
+        title: "Pacman",
+        genre: "Arcade"
+      };
+      const res = await req(server)
+        .post("/api/games")
+        .send(game);
+      expect(res.status).toBe(201);
+      expect(res.type).toBe("application/json");
+      expect(res.body).toEqual(game);
+    });
   });
 });
 
 /* 
+Object Schema
   const game = {
     title: "Pacman 2",
     genre: "Arcade",
