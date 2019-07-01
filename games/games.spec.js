@@ -75,5 +75,28 @@ describe("the games router", () => {
       expect(res.type).toBe("application/json");
       expect(res.body).toEqual(game);
     });
+
+    it("should return 422 no genre", async () => {
+      const game = {
+        title: "Pacman",
+        releaseYear: 1980
+      };
+      const res = await req(server)
+        .post("/api/games")
+        .send(game);
+      expect(res.status).toBe(422);
+      expect(res.type).toBe("application/json");
+      expect(res.body).toEqual({
+        messsage: "please supply a correct title and genre for the game"
+      });
+    });
   });
 });
+
+/* 
+  const game = {
+    title: "Pacman 2",
+    genre: "Arcade",
+    releaseYear: 1981
+  };  
+*/
