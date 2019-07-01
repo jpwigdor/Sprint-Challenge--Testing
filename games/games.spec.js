@@ -13,33 +13,67 @@ describe("the games router", () => {
       expect(res.type).toBe("application/json");
       expect(res.body).toEqual([]);
     });
-  });
 
-  it("should return an array of games", async () => {
-    Games.addGame({
-      title: "Pacman",
-      genre: "Arcade",
-      releaseYear: 1980
-    });
-    Games.addGame({
-      title: "Mario",
-      genre: "Platformer",
-      releaseYear: 1989
-    });
-    const res = await req(server).get("/api/games");
-    expect(res.status).toBe(200);
-    expect(res.type).toBe("application/json");
-    expect(res.body).toEqual([
-      {
+    it("should return a single game ", async () => {
+      Games.addGame({
         title: "Pacman",
         genre: "Arcade",
         releaseYear: 1980
-      },
-      {
+      });
+      const res = await req(server).get("/api/games");
+      expect(res.status).toBe(200);
+      expect(res.type).toBe("application/json");
+      expect(res.body).toEqual([
+        {
+          title: "Pacman",
+          genre: "Arcade",
+          releaseYear: 1980
+        }
+      ]);
+    });
+
+    it("should return an array of games", async () => {
+      Games.addGame({
+        title: "Pacman",
+        genre: "Arcade",
+        releaseYear: 1980
+      });
+      Games.addGame({
         title: "Mario",
         genre: "Platformer",
         releaseYear: 1989
-      }
-    ]);
+      });
+      const res = await req(server).get("/api/games");
+      expect(res.status).toBe(200);
+      expect(res.type).toBe("application/json");
+      expect(res.body).toEqual([
+        {
+          title: "Pacman",
+          genre: "Arcade",
+          releaseYear: 1980
+        },
+        {
+          title: "Mario",
+          genre: "Platformer",
+          releaseYear: 1989
+        }
+      ]);
+    });
+  });
+
+  describe("POST /api/games", () => {
+    it("should return an added game", async () => {
+      const game = {
+        title: "Pacman 2",
+        genre: "Arcade",
+        releaseYear: 1981
+      };
+      const res = await req(server)
+        .post("/api/games")
+        .send(game);
+      expect(res.status).toBe(201);
+      expect(res.type).toBe("application/json");
+      expect(res.body).toEqual(game);
+    });
   });
 });
